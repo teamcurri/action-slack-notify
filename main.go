@@ -57,23 +57,37 @@ type Field struct {
 func main() {
 	endpoint := os.Getenv(EnvSlackWebhook)
 	if endpoint == "" {
-		fmt.Fprintln(os.Stderr, "URL is required")
+		_, err := fmt.Fprintln(os.Stderr, "URL is required")
+		if err != nil {
+			return
+		}
+
 		os.Exit(1)
 	}
+
 	text := os.Getenv(EnvSlackMessage)
+
 	if text == "" {
-		fmt.Fprintln(os.Stderr, "Message is required")
+		_, err := fmt.Fprintln(os.Stderr, "Message is required")
+		if err != nil {
+			return
+		}
+
 		os.Exit(1)
 	}
+
 	if strings.HasPrefix(os.Getenv("GITHUB_WORKFLOW"), ".github") {
-		os.Setenv("GITHUB_WORKFLOW", "Link to action run")
+		err := os.Setenv("GITHUB_WORKFLOW", "Link to action run")
+		if err != nil {
+			return
+		}
 	}
 
-	long_sha := os.Getenv("GITHUB_SHA")
-	commit_sha := long_sha[0:6]
-
+	longSha := os.Getenv("GITHUB_SHA")
+	commitSha := longSha[0:6]
 	minimal := os.Getenv(EnvMinimal)
-	fields := []Field{}
+
+	var fields []Field
 	if minimal == "true" {
 		mainFields := []Field{
 			{
@@ -82,9 +96,11 @@ func main() {
 				Short: false,
 			},
 		}
+
 		fields = append(mainFields, fields...)
 	} else if minimal != "" {
 		requiredFields := strings.Split(minimal, ",")
+
 		mainFields := []Field{
 			{
 				Title: os.Getenv(EnvSlackTitle),
@@ -92,6 +108,7 @@ func main() {
 				Short: false,
 			},
 		}
+
 		for _, requiredField := range requiredFields {
 			switch strings.ToLower(requiredField) {
 			case "ref":
@@ -125,7 +142,7 @@ func main() {
 				field := []Field{
 					{
 						Title: "Commit",
-						Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "|" + commit_sha + ">",
+						Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "|" + commitSha + ">",
 						Short: true,
 					},
 				}
@@ -151,7 +168,7 @@ func main() {
 			},
 			{
 				Title: "Commit",
-				Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "|" + commit_sha + ">",
+				Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "|" + commitSha + ">",
 				Short: true,
 			},
 			{
@@ -160,12 +177,13 @@ func main() {
 				Short: false,
 			},
 		}
+
 		fields = append(mainFields, fields...)
 	}
 
 	hostName := os.Getenv(EnvHostName)
 	if hostName != "" {
-		newfields := []Field{
+		newFields := []Field{
 			{
 				Title: os.Getenv("SITE_TITLE"),
 				Value: os.Getenv(EnvSiteName),
@@ -177,10 +195,11 @@ func main() {
 				Short: true,
 			},
 		}
-		fields = append(newfields, fields...)
+		fields = append(newFields, fields...)
 	}
 
 	color := ""
+
 	switch os.Getenv(EnvSlackColor) {
 	case "success":
 		color = "good"
@@ -212,7 +231,11 @@ func main() {
 	}
 
 	if err := send(endpoint, msg); err != nil {
-		fmt.Fprintf(os.Stderr, "Error sending message: %s\n", err)
+		_, err := fmt.Fprintf(os.Stderr, "Error sending message: %s\n", err)
+		if err != nil {
+			return
+		}
+
 		os.Exit(2)
 	}
 }
@@ -229,7 +252,9 @@ func send(endpoint string, msg Webhook) error {
 	if err != nil {
 		return err
 	}
+
 	b := bytes.NewBuffer(enc)
+
 	res, err := http.Post(endpoint, "application/json", b)
 	if err != nil {
 		return err
@@ -238,6 +263,7 @@ func send(endpoint string, msg Webhook) error {
 	if res.StatusCode >= 299 {
 		return fmt.Errorf("Error on message: %s\n", res.Status)
 	}
+
 	fmt.Println(res.Status)
 	return nil
 }
