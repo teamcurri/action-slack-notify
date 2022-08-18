@@ -4,7 +4,7 @@ author: 'rtCamp | modified by Curri'
 runs:
   using: 'composite'
   steps:
-    - run: main.sh
+    - run: $GITHUB_ACTION_PATH/main.sh
       shell: bash
 branding:
   icon: 'bell'
