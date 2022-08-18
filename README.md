@@ -22,7 +22,10 @@ since we provide those environment variables already and wanted to avoid install
 ### From Windows (PowerShell 7+):
 
 `$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -ldflags="-s -w" -o bin/slack-notify main.go`  
-`sudo upx --brute ./bin/slack-notify`
+`wsl bash -c -i "sudo upx --brute ./bin/slack-notify"`
+
+> You may need to update permissions for Linux on Windows. You can do this with  
+> `git update-index --chmod=+x ./bin/slack-notify`
 
 -------------------------------
 
@@ -88,7 +91,7 @@ SLACK_COLOR       | `good` (green)                                        | You 
 SLACK_LINK_NAMES  | -                                                     | If set to `true`, enable mention in Slack message.
 SLACK_MESSAGE     | Generated from git commit message.                    | The main Slack message in attachment. It is advised not to override this.
 SLACK_TITLE       | Message                                               | Title to use before main Slack message.
-SLACK_FOOTER      | Powered By rtCamp's GitHub Actions Library            | Slack message footer.
+SLACK_FOOTER      | -                                                     | Slack message footer.
 MSG_MINIMAL       | -                                                     | If set to `true`, removes: `Ref`, `Event`,  `Actions URL` and `Commit` from the message. You can optionally whitelist any of these 4 removed values by passing it comma separated to the variable instead of `true`. (ex: `MSG_MINIMAL: event` or `MSG_MINIMAL: ref,actions url`, etc.)
 
 You can see the action block with all variables as below:
