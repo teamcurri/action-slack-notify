@@ -1,8 +1,28 @@
-This action is a part of [GitHub Actions Library](https://github.com/rtCamp/github-actions-library/) created by [rtCamp](https://github.com/rtCamp/).
+# Modified by Curri
+
+This repo builds a Go binary based on this image and then shims it using nodeJS. This avoids unnecessary usage of
+Docker. It can even be used in the same way as the original.
+
+## How to build
+
+> NOTE: All builds are expected to target Linux.
+
+POSIX:  
+`env GOOS=linux GOARCH=amd64 go build main.go`
+
+Windows (PowerShell 7+):  
+`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build main.go`
+
+-------------------------------
+
+# ORIGINAL README
+
+This action is a part of [GitHub Actions Library](https://github.com/rtCamp/github-actions-library/) created
+by [rtCamp](https://github.com/rtCamp/).
 
 # Slack Notify - GitHub Action
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 A [GitHub Action](https://github.com/features/actions) to send a message to a Slack channel.
 
@@ -10,7 +30,8 @@ A [GitHub Action](https://github.com/features/actions) to send a message to a Sl
 
 <img width="485" alt="action-slack-notify-rtcamp" src="https://user-images.githubusercontent.com/4115/54996943-9d38c700-4ff0-11e9-9d35-7e2c16ef0d62.png">
 
-The `Site` and `SSH Host` details are only available if this action is run after [Deploy WordPress GitHub action](https://github.com/rtCamp/action-deploy-wordpress).
+The `Site` and `SSH Host` details are only available if this action is run
+after [Deploy WordPress GitHub action](https://github.com/rtCamp/action-deploy-wordpress).
 
 ## Usage
 
@@ -27,19 +48,21 @@ jobs:
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 ```
 
-3. Create `SLACK_WEBHOOK` secret using [GitHub Action's Secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository). You can [generate a Slack incoming webhook token from here](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks).
-
+3. Create `SLACK_WEBHOOK` secret
+   using [GitHub Action's Secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository)
+   . You can [generate a Slack incoming webhook token from here](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks).
 
 ## Environment Variables
 
-By default, action is designed to run with minimal configuration but you can alter Slack notification using following environment variables:
+By default, action is designed to run with minimal configuration but you can alter Slack notification using following
+environment variables:
 
 Variable          | Default                                               | Purpose
 ------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +72,7 @@ SLACK_MSG_AUTHOR  | `$GITHUB_ACTOR` (The person who triggered action).    | GitH
 SLACK_ICON        | ![rtBot Avatar](https://github.com/rtBot.png?size=32) | User/Bot icon shown with Slack message. It uses the URL supplied to this env variable to display the icon in slack message.
 SLACK_ICON_EMOJI  | -                                                     | User/Bot icon shown with Slack message, in case you do not wish to add a URL for slack icon as above, you can set slack emoji in this env variable. Example value: `:bell:` or any other valid slack emoji.
 SLACK_COLOR       | `good` (green)                                        | You can pass `${{ job.status }}` for automatic coloring or an RGB value like `#efefef` which would change color on left side vertical line of Slack message.
-SLACK_LINK_NAMES  | -                                                     | If set to `true`, enable mention in Slack message. 
+SLACK_LINK_NAMES  | -                                                     | If set to `true`, enable mention in Slack message.
 SLACK_MESSAGE     | Generated from git commit message.                    | The main Slack message in attachment. It is advised not to override this.
 SLACK_TITLE       | Message                                               | Title to use before main Slack message.
 SLACK_FOOTER      | Powered By rtCamp's GitHub Actions Library            | Slack message footer.
@@ -74,7 +97,8 @@ Below screenshot help you visualize message part controlled by different variabl
 
 <img width="600" alt="Screenshot_2019-03-26_at_5_56_05_PM" src="https://user-images.githubusercontent.com/4115/54997488-d1f94e00-4ff1-11e9-897f-a35ab90f525f.png">
 
-The `Site` and `SSH Host` details are only available if this action is run after [Deploy WordPress GitHub action](https://github.com/rtCamp/action-deploy-wordpress).
+The `Site` and `SSH Host` details are only available if this action is run
+after [Deploy WordPress GitHub action](https://github.com/rtCamp/action-deploy-wordpress).
 
 ## Hashicorp Vault (Optional)
 
@@ -97,12 +121,12 @@ jobs:
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-        VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
 ```
 
 GitHub action uses `VAULT_TOKEN` to connect to `VAULT_ADDR` to retrieve slack webhook from Vault.
@@ -110,6 +134,7 @@ GitHub action uses `VAULT_TOKEN` to connect to `VAULT_ADDR` to retrieve slack we
 In the Vault, the Slack webhook should be setup as field `webhook` on path `secret/slack`.
 
 ## Credits
+
 Source: [technosophos/slack-notify](https://github.com/technosophos/slack-notify)
 
 ## License
