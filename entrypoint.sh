@@ -20,7 +20,7 @@ fi
 
 # custom path for files to override default files
 custom_path="$GITHUB_WORKSPACE/.github/slack"
-main_script="/main.sh"
+main_script="./main.sh"
 
 if [[ -d "$custom_path" ]]; then
   rsync -av "$custom_path/" /
