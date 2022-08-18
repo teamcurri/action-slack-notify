@@ -2,8 +2,10 @@ name: 'Slack Notify'
 description: 'This action will send a notification to Slack'
 author: 'rtCamp | modified by Curri'
 runs:
-  using: 'node16'
-  main: 'main.mjs'
+  using: 'composite'
+  steps:
+    - run: main.sh
+      shell: bash
 branding:
   icon: 'bell'
   color: 'yellow'
