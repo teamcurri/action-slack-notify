@@ -6,4 +6,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const script = `${__dirname}/bin/slack-notify`
 
-childProcess.spawnSync(script, {stdio: 'inherit'})
+childProcess.spawnSync(script, {
+    shell: 'sh',
+    stdio: 'inherit'
+})

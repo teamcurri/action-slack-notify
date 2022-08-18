@@ -7,11 +7,11 @@ Docker. It can even be used in the same way as the original.
 
 > NOTE: All builds are expected to target Linux.
 
-POSIX:  
-`env GOOS=linux GOARCH=amd64 go build -o bin/main main.go`
+### From POSIX:  
+`env GOOS=linux GOARCH=amd64 go build -o bin/slack-notify main.go`
 
-Windows (PowerShell 7+):  
-`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -o bin/main main.go`
+### From Windows (PowerShell 7+):  
+`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -o bin/slack-notify main.go`
 
 -------------------------------
 
