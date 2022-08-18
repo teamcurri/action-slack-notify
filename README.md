@@ -8,10 +8,10 @@ Docker. It can even be used in the same way as the original.
 > NOTE: All builds are expected to target Linux.
 
 POSIX:  
-`env GOOS=linux GOARCH=amd64 go build main.go`
+`env GOOS=linux GOARCH=amd64 go build -o bin/main main.go`
 
 Windows (PowerShell 7+):  
-`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build main.go`
+`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -o bin/main main.go`
 
 -------------------------------
 
