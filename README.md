@@ -1,8 +1,10 @@
-# Action Slack Notify (forked from rtCamp/action-slack-notify)
+# Action Slack Notify
+
+(Forked from [rtCamp/action-slack-notify](https://github.com/rtCamp/action-slack-notify))
 
 This repo builds a Go binary based on this image and then starts it with a shell script. This avoids unnecessary usage
 of Docker. It can even be used in the same way as the original. Some things have been ripped out of the shell scripts
-since we provide those environment variables already, and wanted to avoid installing extra dependencies.
+since we provide those environment variables already and wanted to avoid installing extra dependencies.
 
 ## How to build
 
@@ -14,12 +16,12 @@ since we provide those environment variables already, and wanted to avoid instal
 
 ### From POSIX:
 
-`env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bin/slack-notify main.go`
+`env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bin/slack-notify main.go`  
 `sudo upx --brute ./bin/slack-notify`
 
 ### From Windows (PowerShell 7+):
 
-`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -ldflags="-s -w" -o bin/slack-notify main.go`
+`$Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -ldflags="-s -w" -o bin/slack-notify main.go`  
 `sudo upx --brute ./bin/slack-notify`
 
 -------------------------------
